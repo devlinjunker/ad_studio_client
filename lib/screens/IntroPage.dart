@@ -22,7 +22,7 @@ class _IntroPageState extends State<IntroPage> {
   int _counter = 0;
 
   void _goToProducerInfoPage(context) {
-    Navigator.pushNamed(context, '/producer');
+    Navigator.pushReplacementNamed(context, '/producer');
   }
 
   @override
@@ -57,10 +57,27 @@ class _IntroPageState extends State<IntroPage> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            const Text(
-              'Welcome to AI Movie Studio, The Simulated Movie Production Game with Help from GPT-3, DALL-E and Stable Diffusion!',
+            Container(
+              margin: EdgeInsets.only(top: 25, bottom: 24),
+              child: RichText(
+                text: const TextSpan(
+                  children: <TextSpan>[
+                    TextSpan(
+                      text: "'Welcome to ",
+                    ),
+                    TextSpan(
+                      text: "AI Movie Studio",
+                      style: TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                    TextSpan(
+                      text:
+                          ", The Simulated Movie Production Game with Help from GPT-3, DALL-E and Stable Diffusion!",
+                    ),
+                  ],
+                ),
+              ),
             ),
             const Text(
               'You are an aspiring producer looking to make your way through the trials and tribulations of Hollywood with your trusted AI Sidekicks!',
