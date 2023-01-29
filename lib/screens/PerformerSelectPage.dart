@@ -21,7 +21,7 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
   }
 
   void _goToNextScreen() {
-    Navigator.pushNamed(context, '/movies');
+    Navigator.pushNamed(context, '/performers');
   }
 
   @override
@@ -38,7 +38,7 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
                 constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
                 margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
                 child: Consumer<GameState>(builder: (context, provider, child) {
-                  return Text(provider.current_movie!.name);
+                  return Text(provider.getCurrentMovie()!.name);
                 }))
           ],
         ),

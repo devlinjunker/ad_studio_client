@@ -2,9 +2,15 @@ import 'package:ai_studio_client/models/Movie.dart';
 import 'package:flutter/foundation.dart';
 
 class GameState extends ChangeNotifier {
-  /// Internal, private state of the cart.
+  String? startEra;
+
   Future<List<Movie>?> _movies = Future.value(null);
-  Movie? current_movie = null;
+  Movie? currentMovie;
+
+  void setEra(String era) {
+    startEra = era;
+    notifyListeners();
+  }
 
   void setMovies(Future<List<Movie>> movies) {
     _movies = movies;
@@ -16,11 +22,11 @@ class GameState extends ChangeNotifier {
   }
 
   void setCurrentMovie(Movie movie) {
-    current_movie = movie;
+    currentMovie = movie;
     notifyListeners();
   }
 
-  Movie? getMovie() {
-    return current_movie;
+  Movie? getCurrentMovie() {
+    return currentMovie;
   }
 }

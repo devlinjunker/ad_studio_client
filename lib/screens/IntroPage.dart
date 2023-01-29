@@ -21,8 +21,8 @@ class IntroPage extends StatefulWidget {
 class _IntroPageState extends State<IntroPage> {
   int _counter = 0;
 
-  void _goToProducerInfoPage(context) {
-    Navigator.pushReplacementNamed(context, '/producer');
+  void _goToEraSelectPage(context) {
+    Navigator.pushReplacementNamed(context, '/era');
   }
 
   @override
@@ -87,7 +87,7 @@ class _IntroPageState extends State<IntroPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _goToProducerInfoPage(context);
+          _goToEraSelectPage(context);
         },
         tooltip: 'Select Decade',
         child: const Text('Start'),

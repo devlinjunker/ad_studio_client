@@ -1,3 +1,4 @@
+import 'package:ai_studio_client/screens/EraSelectPage.dart';
 import 'package:ai_studio_client/screens/MovieSelectPage.dart';
 import 'package:ai_studio_client/screens/PerformerSelectPage.dart';
 import 'package:ai_studio_client/store/GameState.dart';
@@ -39,7 +40,7 @@ class _MyAppState extends State<MyApp> {
             ),
             routes: {
               '/': (context) => const IntroPage(title: 'AI Movie Studio'),
-              // When navigating to the "/second" route, build the SecondScreen widget.
+              '/era': (context) => const EraSelectPage(),
               '/producer': (context) => const ProducerInfoPage(),
               '/movies': (context) => const MovieSelectPage(),
               '/performers': (context) => const PerformerSelectPage(),

@@ -11,7 +11,7 @@ class MovieSelectPage extends StatefulWidget {
 }
 
 class _MovieSelectPageState extends State<MovieSelectPage> {
-  Movie? selectedMovie = null;
+  Movie? selectedMovie;
 
   void _goToPerformerSelectScreen() {
     if (selectedMovie != null) {

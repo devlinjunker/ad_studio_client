@@ -17,6 +17,9 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<GameState>(context, listen: false).setMovies(fetchMovies());
+      // Provider.of<GameState>(context, listen: false).setActors(
+      //     fetchActors(Provider.of<GameState>(context, listen: false).startEra));
+      // Provider.of<GameState>(context, listen: false).setActresses(fetchActresses());
     });
   }
 
