@@ -1,7 +1,7 @@
+import 'package:api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/Movie.dart';
 import '../store/GameState.dart';
 
 class ProducerInfoPage extends StatefulWidget {
@@ -15,10 +15,17 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
   @override
   void initState() {
     super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<GameState>(context, listen: false).setMovies(fetchMovies());
-      // Provider.of<GameState>(context, listen: false).setActors(
-      //     fetchActors(Provider.of<GameState>(context, listen: false).startEra));
+      final api =
+          Api(basePathOverride: 'http://localhost:3000').getDefaultApi();
+      final bool useGpt = false; // bool |
+
+      Provider.of<GameState>(context, listen: false)
+          .setMovies(api.fetchMovies(useGpt: useGpt));
+      Provider.of<GameState>(context, listen: false).setActors(api.fetchActors(
+          useGpt: useGpt,
+          dates: Provider.of<GameState>(context, listen: false).startEra!));
       // Provider.of<GameState>(context, listen: false).setActresses(fetchActresses());
     });
   }

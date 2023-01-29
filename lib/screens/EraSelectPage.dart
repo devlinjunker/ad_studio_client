@@ -1,7 +1,6 @@
+import 'package:api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import '../models/Movie.dart';
 import '../store/GameState.dart';
 
 class EraSelectPage extends StatefulWidget {
@@ -26,7 +25,7 @@ class _EraSelectPageState extends State<EraSelectPage> {
     super.initState();
   }
 
-  void _goToProducerInfoPage() {
+  void _goToProducerInfoPage() async {
     Provider.of<GameState>(context, listen: false).setEra(selectedEra!);
     Navigator.pushNamed(context, '/producer');
   }

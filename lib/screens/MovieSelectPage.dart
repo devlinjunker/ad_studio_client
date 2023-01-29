@@ -1,5 +1,7 @@
-import 'package:ai_studio_client/models/Movie.dart';
+import 'package:api/api.dart';
 import 'package:ai_studio_client/store/GameState.dart';
+import 'package:dio/dio.dart';
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -48,7 +50,7 @@ class _MovieSelectPageState extends State<MovieSelectPage> {
                   margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
                   child:
                       Consumer<GameState>(builder: (context, provider, child) {
-                    return FutureBuilder<List<Movie>?>(
+                    return FutureBuilder<Response<BuiltList<Movie>>?>(
                       future: provider.getMovies(),
                       builder: (context, snapshot) {
                         List<Widget> children = <Widget>[
@@ -56,7 +58,7 @@ class _MovieSelectPageState extends State<MovieSelectPage> {
                         ];
 
                         if (snapshot.hasData && snapshot.data != null) {
-                          children = snapshot.data!
+                          children = snapshot.data!.data!
                               .map((movie) => RadioListTile(
                                     title: Text(
                                         "${movie.name} - ${movie.synopsis}"),
