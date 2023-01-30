@@ -30,7 +30,7 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (Provider.of<GameState>(context, listen: false).startEra == null) {
-      Navigator.pushReplacementNamed(context, '/era');
+      Future.microtask(() => {Navigator.pushReplacementNamed(context, '/era')});
     }
   }
 
@@ -54,7 +54,7 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
   Widget build(BuildContext context) {
     PerformerSelectPageArgs? args;
     final settings = ModalRoute.of(context)!.settings;
-    if (settings?.arguments != null) {
+    if (settings.arguments != null) {
       args = settings.arguments as PerformerSelectPageArgs;
     }
 

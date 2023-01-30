@@ -34,6 +34,14 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
     });
   }
 
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (Provider.of<GameState>(context, listen: false).startEra == null) {
+      Future.microtask(() => {Navigator.pushReplacementNamed(context, '/era')});
+    }
+  }
+
   void _goToMovieSelectScreen() {
     Navigator.pushReplacementNamed(context, '/movies');
   }
