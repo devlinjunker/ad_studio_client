@@ -5,6 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import '../store/GameState.dart';
 
+class PerformerSelectPageArgs {
+  String type;
+
+  PerformerSelectPageArgs(this.type);
+}
+
 class PerformerSelectPage extends StatefulWidget {
   const PerformerSelectPage({super.key});
 
@@ -18,17 +24,40 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
   @override
   void initState() {
     super.initState();
-    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-    //   Provider.of<GameState>(context, listen: false).setMovies(fetchMovies());
-    // });
+  }
+
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    if (Provider.of<GameState>(context, listen: false).startEra == null) {
+      Navigator.pushReplacementNamed(context, '/era');
+    }
   }
 
   void _goToNextScreen() {
-    Navigator.pushNamed(context, '/performers');
+    final args =
+        ModalRoute.of(context)!.settings.arguments as PerformerSelectPageArgs?;
+
+    if (args?.type == 'actress') {
+      Provider.of<GameState>(context, listen: false)
+          .setCurrentMovieActress(selectedPerformer!);
+      Navigator.pushNamed(context, '/production');
+    } else {
+      Provider.of<GameState>(context, listen: false)
+          .setCurrentMovieActor(selectedPerformer!);
+      Navigator.pushNamed(context, '/performers',
+          arguments: PerformerSelectPageArgs('actress'));
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    PerformerSelectPageArgs? args;
+    final settings = ModalRoute.of(context)!.settings;
+    if (settings?.arguments != null) {
+      args = settings.arguments as PerformerSelectPageArgs;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -46,7 +75,9 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
                   child:
                       Consumer<GameState>(builder: (context, provider, child) {
                     return FutureBuilder<Response<BuiltList<Performer>>?>(
-                      future: provider.getActors(),
+                      future: args?.type == 'actress'
+                          ? provider.getActresses()
+                          : provider.getActors(),
                       builder: (context, snapshot) {
                         List<Widget> children = <Widget>[
                           CircularProgressIndicator()

@@ -26,6 +26,10 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
       Provider.of<GameState>(context, listen: false).setActors(api.fetchActors(
           useGpt: useGpt,
           dates: Provider.of<GameState>(context, listen: false).startEra!));
+      Provider.of<GameState>(context, listen: false).setActresses(
+          api.fetchActresses(
+              useGpt: useGpt,
+              dates: Provider.of<GameState>(context, listen: false).startEra!));
       // Provider.of<GameState>(context, listen: false).setActresses(fetchActresses());
     });
   }

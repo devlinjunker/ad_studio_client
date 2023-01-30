@@ -38,6 +38,8 @@ dependencies:
         /Users/devlinjunker/Code/js/gpt-cinema/api/client
   dio: ^4.0.6
   built_collection: ^5.1.1
+  basic_utils: ^5.4.2
+
 
 
 
