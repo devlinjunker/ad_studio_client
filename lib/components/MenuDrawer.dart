@@ -23,28 +23,19 @@ MenuDrawer(context) {
         ListTile(
           title: const Text('Main Menu'),
           onTap: () {
-            // Update the state of the app
-            // ...
-            // Then close the drawer
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/');
           },
         ),
         ListTile(
           title: const Text('New Movie'),
           onTap: () {
-            // Update the state of the app
-            // ...
-            // Then close the drawer
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/movies');
           },
         ),
         ListTile(
           title: const Text('Movie Hall'),
           onTap: () {
-            // Update the state of the app
-            // ...
-            // Then close the drawer
-            Navigator.pop(context);
+            Navigator.pushReplacementNamed(context, '/movie-hall');
           },
         ),
         ListTile(

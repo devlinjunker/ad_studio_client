@@ -57,7 +57,7 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
         ),
         drawer: MenuDrawer(context),
         body: SlidingUpPanel(
-          minHeight: 100,
+          minHeight: 120,
           maxHeight: 300,
           panel: Container(
               constraints: const BoxConstraints(minWidth: 400, minHeight: 300),

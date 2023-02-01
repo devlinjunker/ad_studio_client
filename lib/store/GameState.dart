@@ -16,6 +16,8 @@ class GameState extends ChangeNotifier {
 
   Movie? currentMovie;
 
+  List<Movie> studioMovies = List.empty();
+
   void setEra(String era) {
     startEra = era;
     notifyListeners();
@@ -48,8 +50,26 @@ class GameState extends ChangeNotifier {
     return _actresses;
   }
 
+  List<Movie> getStudioMovies() {
+    return studioMovies;
+  }
+
+  void addMovie(Movie movie) {
+    studioMovies = List.from(studioMovies)..add(movie);
+    notifyListeners();
+  }
+
   void setCurrentMovie(Movie movie) {
     currentMovie = movie;
+
+    var oldMovie = studioMovies.where((m) => m.name == movie.name);
+    if (oldMovie.length > 0) {
+      var idx = studioMovies.indexOf(oldMovie.first);
+      studioMovies.replaceRange(idx, idx + 1, [movie]);
+    } else {
+      return addMovie(movie);
+    }
+
     notifyListeners();
   }
 
@@ -63,7 +83,7 @@ class GameState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actor = builder;
-    currentMovie = movieBuilder.build();
+    setCurrentMovie(movieBuilder.build());
     notifyListeners();
   }
 
@@ -73,7 +93,7 @@ class GameState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actress = builder;
-    currentMovie = movieBuilder.build();
+    setCurrentMovie(movieBuilder.build());
     notifyListeners();
   }
 
@@ -81,7 +101,7 @@ class GameState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.posterUrl = url;
-    currentMovie = movieBuilder.build();
+    setCurrentMovie(movieBuilder.build());
     notifyListeners();
   }
 }

@@ -1,4 +1,5 @@
 import 'package:ai_studio_client/screens/EraSelectPage.dart';
+import 'package:ai_studio_client/screens/MovieHallPage.dart';
 import 'package:ai_studio_client/screens/MovieProductionPage.dart';
 import 'package:ai_studio_client/screens/MovieSelectPage.dart';
 import 'package:ai_studio_client/screens/PerformerSelectPage.dart';
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
               '/movies': (context) => const MovieSelectPage(),
               '/performers': (context) => const PerformerSelectPage(),
               '/production': (context) => const MovieProductionPage(),
+              '/movie-hall': (context) => const MovieHallPage(),
             }));
   }
 }

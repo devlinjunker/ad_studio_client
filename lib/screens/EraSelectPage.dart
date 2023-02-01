@@ -36,25 +36,31 @@ class _EraSelectPageState extends State<EraSelectPage> {
       appBar: AppBar(
         title: const Text("Select Era"),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            const Text(
-                "Select an Era - this will affect the people available for your movie"),
-            ...(eraOptions
-                .map((era) => RadioListTile(
-                      title: Text(era),
-                      value: era,
-                      groupValue: selectedEra,
-                      onChanged: (val) {
-                        setState(() {
-                          selectedEra = era;
-                        });
-                      },
-                    ))
-                .toList())
-          ],
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin:
+                    EdgeInsets.only(top: 25, bottom: 20, left: 25, right: 25),
+                child: const Text(
+                    "Select an Era - this will affect the people available for your movie"),
+              ),
+              ...(eraOptions
+                  .map((era) => RadioListTile(
+                        title: Text(era),
+                        value: era,
+                        groupValue: selectedEra,
+                        onChanged: (val) {
+                          setState(() {
+                            selectedEra = era;
+                          });
+                        },
+                      ))
+                  .toList())
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

@@ -40,51 +40,53 @@ class _MovieSelectPageState extends State<MovieSelectPage> {
         appBar: AppBar(
             title: const Text("Select Movie"),
             automaticallyImplyLeading: false),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Container(
-                  constraints:
-                      const BoxConstraints(minWidth: 100, maxWidth: 400),
-                  margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                  child:
-                      Consumer<GameState>(builder: (context, provider, child) {
-                    return FutureBuilder<Response<BuiltList<Movie>>?>(
-                      future: provider.getMovies(),
-                      builder: (context, snapshot) {
-                        List<Widget> children = <Widget>[
-                          CircularProgressIndicator()
-                        ];
+        body: SingleChildScrollView(
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                    constraints:
+                        const BoxConstraints(minWidth: 100, maxWidth: 400),
+                    margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
+                    child: Consumer<GameState>(
+                        builder: (context, provider, child) {
+                      return FutureBuilder<Response<BuiltList<Movie>>?>(
+                        future: provider.getMovies(),
+                        builder: (context, snapshot) {
+                          List<Widget> children = <Widget>[
+                            CircularProgressIndicator()
+                          ];
 
-                        if (snapshot.hasData && snapshot.data != null) {
-                          children = snapshot.data!.data!
-                              .map((movie) => RadioListTile(
-                                    title: Text(
-                                        "${movie.name} - ${movie.synopsis}"),
-                                    value: movie,
-                                    groupValue: selectedMovie,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        selectedMovie = movie;
-                                      });
-                                    },
-                                  ))
-                              .toList();
-                        } else if (snapshot.hasError) {
-                          children = <Widget>[Text('${snapshot.error}')];
-                        }
+                          if (snapshot.hasData && snapshot.data != null) {
+                            children = snapshot.data!.data!
+                                .map((movie) => RadioListTile(
+                                      title: Text(
+                                          "${movie.name} - ${movie.synopsis}"),
+                                      value: movie,
+                                      groupValue: selectedMovie,
+                                      onChanged: (val) {
+                                        setState(() {
+                                          selectedMovie = movie;
+                                        });
+                                      },
+                                    ))
+                                .toList();
+                          } else if (snapshot.hasError) {
+                            children = <Widget>[Text('${snapshot.error}')];
+                          }
 
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: children,
-                          ),
-                        );
-                      },
-                    );
-                  }))
-            ],
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: children,
+                            ),
+                          );
+                        },
+                      );
+                    }))
+              ],
+            ),
           ),
         ),
         floatingActionButton: FloatingActionButton(

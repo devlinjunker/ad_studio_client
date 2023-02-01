@@ -20,8 +20,6 @@ class IntroPage extends StatefulWidget {
 }
 
 class _IntroPageState extends State<IntroPage> {
-  int _counter = 0;
-
   void _goToEraSelectPage(context) {
     Navigator.pushReplacementNamed(context, '/era');
   }
@@ -42,49 +40,36 @@ class _IntroPageState extends State<IntroPage> {
       ),
       drawer: MenuDrawer(context),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              margin: EdgeInsets.only(top: 25, bottom: 24),
-              child: RichText(
-                text: const TextSpan(
-                  children: <TextSpan>[
-                    TextSpan(
-                      text: "'Welcome to ",
-                    ),
-                    TextSpan(
-                      text: "AI Movie Studio",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                    TextSpan(
-                      text:
-                          ", The Simulated Movie Production Game with Help from GPT-3, DALL-E and Stable Diffusion!",
-                    ),
-                  ],
+        child: Container(
+          margin: EdgeInsets.only(top: 25, bottom: 25, left: 25, right: 25),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                margin: EdgeInsets.only(top: 25, bottom: 25),
+                child: RichText(
+                  text: const TextSpan(
+                    children: <TextSpan>[
+                      TextSpan(
+                        text: "'Welcome to ",
+                      ),
+                      TextSpan(
+                        text: "AI Movie Studio",
+                        style: TextStyle(fontStyle: FontStyle.italic),
+                      ),
+                      TextSpan(
+                        text:
+                            ", The Simulated Movie Production Game with Help from GPT-3, DALL-E and Stable Diffusion!",
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const Text(
-              'You are an aspiring producer looking to make your way through the trials and tribulations of Hollywood with your trusted AI Sidekicks!',
-            ),
-          ],
+              const Text(
+                'You are an aspiring producer looking to make your way through the trials and tribulations of Hollywood with your trusted AI Sidekicks!',
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
