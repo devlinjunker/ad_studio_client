@@ -1,3 +1,4 @@
+import 'package:ai_studio_client/components/ExpandableAction/ExpandableActionButton.dart';
 import 'package:ai_studio_client/components/MenuDrawer.dart';
 import 'package:ai_studio_client/components/MovieListItem.dart';
 import 'package:flutter/material.dart';

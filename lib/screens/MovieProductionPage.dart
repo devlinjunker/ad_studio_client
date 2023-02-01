@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
+import '../components/ExpandableAction/ExpandableActionButton.dart';
+
 class MovieProductionPage extends StatefulWidget {
   const MovieProductionPage({super.key});
 
@@ -113,15 +115,41 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                         children: children));
               })),
           // Background behind sliding panel
-          body: Center(
+          body: const Center(
             child: Text("This is the Widget behind the sliding panel"),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: generatePoster,
-          tooltip: 'Generate',
-          child: const Text('Poster'),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
+        floatingActionButton: ExpandableActionButton(
+          angle: 90,
+          children: [
+            ActionButton(
+              label: 'Generate Poster',
+              onPressed: () => generatePoster(),
+              icon: const Icon(Icons.insert_photo),
+            ),
+            ActionButton(
+              label: 'Generate Scandal',
+              onPressed: () => generatePoster(),
+              icon: const Icon(Icons.enhance_photo_translate),
+            ),
+            ActionButton(
+              label: 'Generate Issue',
+              onPressed: () => generatePoster(),
+              icon: const Icon(Icons.local_phone),
+            ),
+            ActionButton(
+              label: 'Generate Taglines',
+              onPressed: () => generatePoster(),
+              icon: const Icon(Icons.format_quote),
+            ),
+          ],
+        ),
+
+        // FloatingActionButton(
+        //   onPressed: generatePoster,
+        //   tooltip: 'Generate',
+        //   child: const Text('Poster'),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
       );
     });
   }
