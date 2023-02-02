@@ -104,19 +104,52 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                         children: children));
               })),
           // Background behind sliding panel
-          body: Container(
-              padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-              child: Flex(direction: Axis.vertical, children: [
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  RichText(
-                      text: TextSpan(
-                    text: "Production Log",
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline),
-                  ))
-                ]),
-              ])),
+          body: Column(children: [
+            Flex(direction: Axis.vertical, children: [
+              Container(
+                  color: Colors.green[800],
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 25),
+                              child: RichText(
+                                text: const TextSpan(
+                                    text: '\$0',
+                                    style: TextStyle(color: Colors.white)),
+                                textAlign: TextAlign.left,
+                              )),
+                        ),
+                        Expanded(
+                            flex: 2,
+                            child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 25),
+                                child: RichText(
+                                  text: const TextSpan(
+                                      text: 'Feb 1, 2022',
+                                      style: TextStyle(color: Colors.white)),
+                                  textAlign: TextAlign.right,
+                                )))
+                      ])),
+              Container(
+                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                            text: const TextSpan(
+                          text: "Production Log",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.underline),
+                        ))
+                      ])),
+            ]),
+          ]),
         ),
         floatingActionButton: ExpandableActionButton(
           angle: 90,
