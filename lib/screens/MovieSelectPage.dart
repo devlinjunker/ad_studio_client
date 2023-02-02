@@ -1,9 +1,12 @@
 import 'package:api/api.dart';
-import 'package:ai_studio_client/store/GameState.dart';
+
 import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'package:ai_studio_client/store/GameState.dart';
+import 'package:ai_studio_client/store/StudioState.dart';
 
 class MovieSelectPage extends StatefulWidget {
   const MovieSelectPage({super.key});
@@ -17,7 +20,7 @@ class _MovieSelectPageState extends State<MovieSelectPage> {
 
   void _goToPerformerSelectScreen() {
     if (selectedMovie != null) {
-      Provider.of<GameState>(context, listen: false)
+      Provider.of<StudioState>(context, listen: false)
           .setCurrentMovie(selectedMovie!);
       Navigator.pushNamed(context, '/performers');
     }

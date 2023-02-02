@@ -4,6 +4,7 @@ import 'package:ai_studio_client/screens/MovieProductionPage.dart';
 import 'package:ai_studio_client/screens/MovieSelectPage.dart';
 import 'package:ai_studio_client/screens/PerformerSelectPage.dart';
 import 'package:ai_studio_client/store/GameState.dart';
+import 'package:ai_studio_client/store/StudioState.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'screens/IntroPage.dart';
@@ -24,8 +25,12 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-        create: (context) => GameState(),
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<GameState>(create: (context) => GameState()),
+          ChangeNotifierProvider<StudioState>(
+              create: (context) => StudioState())
+        ],
         child: MaterialApp(
             title: 'Flutter Demo',
             theme: ThemeData(

@@ -40,11 +40,11 @@ class MovieListItem extends StatelessWidget {
     var poster =
         Image.asset(height: 190, width: 100, 'images/poster-placeholder.jpg');
 
-    if (movie?.posterUrl != null) {
+    if (movie.posterUrl != null) {
       poster = Image.network(
           height: 190,
           width: 100,
-          'http://localhost:3000/image?path=${movie!.posterUrl!}');
+          'http://localhost:3000/image?path=${movie.posterUrl!}');
     }
 
     GlobalKey key = GlobalKey();

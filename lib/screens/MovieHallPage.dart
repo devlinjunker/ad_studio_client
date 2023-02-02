@@ -1,11 +1,10 @@
-import 'package:ai_studio_client/components/ExpandableAction/ExpandableActionButton.dart';
 import 'package:ai_studio_client/components/MenuDrawer.dart';
 import 'package:ai_studio_client/components/MovieListItem.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:api/api.dart';
 
-import 'package:ai_studio_client/store/GameState.dart';
+import '../store/StudioState.dart';
 
 class MovieHallPage extends StatefulWidget {
   const MovieHallPage({super.key});
@@ -19,7 +18,7 @@ class _MovieHallPageState extends State<MovieHallPage> {
 
   void _goToMovieProductionPage(context) {
     if (selectedMovie != null) {
-      Provider.of<GameState>(context, listen: false)
+      Provider.of<StudioState>(context, listen: false)
           .setCurrentMovie(selectedMovie!);
       Navigator.pushReplacementNamed(context, '/production');
     }
@@ -33,19 +32,9 @@ class _MovieHallPageState extends State<MovieHallPage> {
       ),
       drawer: MenuDrawer(context),
       body: Center(
-          child: Consumer<GameState>(builder: (context, provider, child) {
+          child: Consumer<StudioState>(builder: (context, provider, child) {
         return ListView(
             children: provider.getStudioMovies().map<Widget>((movie) {
-          var poster = Image.asset(
-              height: 190, width: 100, 'images/poster-placeholder.jpg');
-
-          if (movie?.posterUrl != null) {
-            poster = Image.network(
-                height: 190,
-                width: 100,
-                'http://localhost:3000/image?path=${movie!.posterUrl!}');
-          }
-
           return MovieListItem(
             movie: movie,
             onTap: () {

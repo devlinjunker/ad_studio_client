@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
 import 'package:built_collection/built_collection.dart';
 import '../store/GameState.dart';
+import '../store/StudioState.dart';
 
 class PerformerSelectPageArgs {
   String type;
@@ -39,11 +40,11 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
         ModalRoute.of(context)!.settings.arguments as PerformerSelectPageArgs?;
 
     if (args?.type == 'actress') {
-      Provider.of<GameState>(context, listen: false)
+      Provider.of<StudioState>(context, listen: false)
           .setCurrentMovieActress(selectedPerformer!);
       Navigator.pushNamed(context, '/production');
     } else {
-      Provider.of<GameState>(context, listen: false)
+      Provider.of<StudioState>(context, listen: false)
           .setCurrentMovieActor(selectedPerformer!);
       Navigator.pushNamed(context, '/performers',
           arguments: PerformerSelectPageArgs('actress'));
