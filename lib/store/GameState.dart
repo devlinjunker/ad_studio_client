@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:api/api.dart';
 import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
@@ -67,5 +68,11 @@ class GameState extends ChangeNotifier {
 
   Future<Response<BuiltList<Performer>>?> getActresses() {
     return _actresses;
+  }
+
+  void stepWeek() {
+    currentDate =
+        Date(currentDate!.year, currentDate!.month, currentDate!.day + 7);
+    notifyListeners();
   }
 }

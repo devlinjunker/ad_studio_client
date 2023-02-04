@@ -60,4 +60,16 @@ class ProductionService {
 
     return image.data!;
   }
+
+  static Future<String> generateJournalLine(movie, useGpt) async {
+    var builder = GeneratePosterRequestBuilder();
+    var movieBuilder = MovieBuilder();
+    movieBuilder.replace(movie!);
+    builder.movie = movieBuilder;
+    builder.useGpt = true;
+
+    var log =
+        await api.generateProductionLog(generatePosterRequest: builder.build());
+    return log.data!;
+  }
 }

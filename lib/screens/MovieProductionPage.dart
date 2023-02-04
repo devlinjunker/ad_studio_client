@@ -1,6 +1,8 @@
 import 'package:ai_studio_client/components/MenuDrawer.dart';
+import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
@@ -34,9 +36,20 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
     var movie =
         Provider.of<StudioState>(context, listen: false).getCurrentMovie();
 
+    StudioState studio = Provider.of<StudioState>(context, listen: false);
+
     var image = await ProductionService.generatePoster(movie, useGpt);
-    Provider.of<StudioState>(context, listen: false)
-        .setCurrentMoviePoster(image);
+    studio.setCurrentMoviePoster(image);
+  }
+
+  void nextWeek() async {
+    var game = Provider.of<GameState>(context, listen: false);
+    var studio = Provider.of<StudioState>(context, listen: false);
+    var movie = studio.getCurrentMovie();
+
+    var log = await ProductionService.generateJournalLine(movie, true);
+    studio.addCurrentMovieLog(game.currentDate!, log);
+    game.stepWeek();
   }
 
   @override
@@ -128,32 +141,68 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                             child: Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 10, horizontal: 25),
-                                child: RichText(
-                                  text: const TextSpan(
-                                      text: 'Feb 1, 2022',
-                                      style: TextStyle(color: Colors.white)),
-                                  textAlign: TextAlign.right,
-                                )))
+                                child: Consumer<GameState>(
+                                    builder: (context, provider, child) {
+                                  String date = '';
+                                  if (provider.currentDate != null) {
+                                    date = DateFormat.yMMMd().format(
+                                        provider.currentDate!.toDateTime());
+                                  }
+
+                                  return RichText(
+                                    text: TextSpan(
+                                        text: date,
+                                        style: TextStyle(color: Colors.white)),
+                                    textAlign: TextAlign.right,
+                                  );
+                                })))
                       ])),
               Container(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        RichText(
-                            text: const TextSpan(
-                          text: "Production Log",
-                          style: TextStyle(
+                  child: Consumer<StudioState>(
+                      builder: (context, provider, child) {
+                    var logs = [];
+                    if (provider.currentMovie?.log != null &&
+                        provider.currentMovie!.log!.isNotEmpty) {
+                      logs = provider.currentMovie!.log!.map((log) {
+                        return RichText(
+                            text: TextSpan(children: <TextSpan>[
+                          TextSpan(
+                            text: log.date,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline),
-                        ))
-                      ])),
+                            ),
+                          ),
+                          TextSpan(
+                            text: log.log.oneOf.value.toString(),
+                          )
+                        ]));
+                      }).toList();
+                    }
+                    return Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          RichText(
+                              text: const TextSpan(
+                            text: "Production Log",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                decoration: TextDecoration.underline),
+                          )),
+                          ...logs
+                        ]);
+                  })),
             ]),
           ]),
         ),
         floatingActionButton: ExpandableActionButton(
           angle: 90,
           children: [
+            ActionButton(
+              label: 'Next Week',
+              onPressed: () => nextWeek(),
+              icon: const Icon(Icons.fast_forward),
+            ),
             ActionButton(
               label: 'Generate Poster',
               onPressed: () => generatePoster(),
