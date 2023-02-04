@@ -1,6 +1,7 @@
 import 'package:api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:built_value/serializer.dart';
 import '../store/GameState.dart';
 
 class EraSelectPage extends StatefulWidget {
@@ -11,13 +12,13 @@ class EraSelectPage extends StatefulWidget {
 }
 
 class _EraSelectPageState extends State<EraSelectPage> {
-  String? selectedEra;
-  List<String> eraOptions = [
-    '1980-1990',
-    '1990-2000',
-    '2000-2010',
-    '2010-2020',
-    '2020s'
+  Era? selectedEra;
+  List<Era> eraOptions = [
+    Era.n19801990,
+    Era.n19902000,
+    Era.n20002010,
+    Era.n20102020,
+    Era.n2020s
   ];
 
   @override
@@ -49,7 +50,9 @@ class _EraSelectPageState extends State<EraSelectPage> {
               ),
               ...(eraOptions
                   .map((era) => RadioListTile(
-                        title: Text(era),
+                        // Annoying but necessary for enums
+                        title: Text((Era.serializer as PrimitiveSerializer)
+                            .serialize(Serializers(), era) as String),
                         value: era,
                         groupValue: selectedEra,
                         onChanged: (val) {

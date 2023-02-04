@@ -8,14 +8,37 @@ class UIMovie {
 }
 
 class GameState extends ChangeNotifier {
-  String? startEra;
+  Date? currentDate;
+  Era? startEra;
 
   Future<Response<BuiltList<Movie>>?> _movies = Future.value(null);
   Future<Response<BuiltList<Performer>>?> _actors = Future.value(null);
   Future<Response<BuiltList<Performer>>?> _actresses = Future.value(null);
 
-  void setEra(String era) {
+  void setEra(Era era) {
     startEra = era;
+    int startDay = Random().nextInt(365 * 3);
+    print(startDay);
+    Date startDate = Date(1980, 0, startDay);
+    switch (era) {
+      case Era.n19801990:
+        startDate = Date(1980, 0, startDay);
+        break;
+      case Era.n19902000:
+        startDate = Date(1990, 0, startDay);
+        break;
+      case Era.n20002010:
+        startDate = Date(2000, 0, startDay);
+        break;
+      case Era.n20102020:
+        startDate = Date(2010, 0, startDay);
+        break;
+      case Era.n2020s:
+        startDate = Date(2020, 0, startDay);
+        break;
+    }
+    currentDate = startDate;
+
     notifyListeners();
   }
 
