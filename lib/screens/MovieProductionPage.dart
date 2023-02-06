@@ -1,3 +1,4 @@
+import 'package:ai_studio_client/AppScheme.dart';
 import 'package:ai_studio_client/components/MenuDrawer.dart';
 import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
@@ -62,29 +63,18 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
         drawer: MenuDrawer(context),
         body: Stack(children: [
           Container(
+            color: Colors.orange[50],
             constraints: BoxConstraints(
                 maxWidth: MediaQuery.of(context).size.width,
                 maxHeight: MediaQuery.of(context).size.height),
             // Set the padding to display above the panel
-            padding: const EdgeInsets.only(bottom: 100),
+            padding: const EdgeInsets.only(bottom: 90),
             child: Flex(direction: Axis.vertical, children: [
               Container(
-                  color: Colors.green[800],
+                  color: Color.fromRGBO(70, 67, 36, 1),
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Expanded(
-                          flex: 2,
-                          child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 10, horizontal: 25),
-                              child: RichText(
-                                text: const TextSpan(
-                                    text: '\$0',
-                                    style: TextStyle(color: Colors.white)),
-                                textAlign: TextAlign.left,
-                              )),
-                        ),
                         Expanded(
                             flex: 2,
                             child: Container(
@@ -102,9 +92,21 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                                     text: TextSpan(
                                         text: date,
                                         style: TextStyle(color: Colors.white)),
-                                    textAlign: TextAlign.right,
+                                    textAlign: TextAlign.left,
                                   );
-                                })))
+                                }))),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 25),
+                              child: RichText(
+                                text: const TextSpan(
+                                    text: '\$0',
+                                    style: TextStyle(color: Colors.white)),
+                                textAlign: TextAlign.right,
+                              )),
+                        ),
                       ])),
               const Expanded(child: const MovieProductionLog()),
             ]),
@@ -113,9 +115,10 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
             minHeight: 100,
             maxHeight: 200,
             panel: Container(
+                color: AppScheme.background,
                 constraints:
-                    const BoxConstraints(minWidth: 400, minHeight: 225),
-                margin: const EdgeInsets.only(top: 0, left: 25, right: 25),
+                    const BoxConstraints(minWidth: 400, minHeight: 200),
+                padding: const EdgeInsets.only(top: 0, left: 25, right: 25),
                 child:
                     Consumer<StudioState>(builder: (context, provider, child) {
                   var movie = provider.getCurrentMovie();
@@ -123,7 +126,7 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                   var tagline = movie?.tagline ?? '';
                   var children = <Widget>[
                     Container(
-                        margin: const EdgeInsets.only(top: 25, left: 25),
+                        margin: const EdgeInsets.only(top: 15, left: 25),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
