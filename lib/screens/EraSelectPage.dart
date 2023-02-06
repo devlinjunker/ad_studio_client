@@ -27,8 +27,10 @@ class _EraSelectPageState extends State<EraSelectPage> {
   }
 
   void _goToProducerInfoPage() async {
-    Provider.of<GameState>(context, listen: false).setEra(selectedEra!);
-    Navigator.pushNamed(context, '/producer');
+    if (selectedEra != null) {
+      Provider.of<GameState>(context, listen: false).setEra(selectedEra!);
+      Navigator.pushNamed(context, '/producer');
+    }
   }
 
   @override

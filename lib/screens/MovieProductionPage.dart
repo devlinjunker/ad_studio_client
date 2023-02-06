@@ -1,7 +1,6 @@
 import 'package:ai_studio_client/components/MenuDrawer.dart';
 import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
-
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +8,7 @@ import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 import '../components/ExpandableAction/ExpandableActionButton.dart';
 import '../components/IssueModal.dart';
+import '../components/MovieProductionLog.dart';
 import '../components/ScandalModal.dart';
 import '../components/TaglinesModal.dart';
 import '../services/production.service.dart';
@@ -60,65 +60,14 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
           title: const Text("Movie Production"),
         ),
         drawer: MenuDrawer(context),
-        body: SlidingUpPanel(
-          minHeight: 120,
-          maxHeight: 300,
-          panel: Container(
-              constraints: const BoxConstraints(minWidth: 400, minHeight: 300),
-              margin: const EdgeInsets.only(top: 0, left: 25, right: 25),
-              child: Consumer<StudioState>(builder: (context, provider, child) {
-                var movie = provider.getCurrentMovie();
-
-                var children = <Widget>[
-                  Container(
-                      margin: const EdgeInsets.only(top: 25, left: 25),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          RichText(
-                            text: TextSpan(
-                              text: '${movie?.name}',
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          RichText(
-                            text: TextSpan(text: '${movie?.actor?.name}'),
-                            textAlign: TextAlign.left,
-                          ),
-                          RichText(
-                            text: TextSpan(text: '${movie?.actress?.name}'),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ))
-                ];
-
-                var child = Image.asset(
-                    height: 190, width: 100, 'images/poster-placeholder.jpg');
-
-                if (movie?.posterUrl != null) {
-                  child = Image.network(
-                      height: 190,
-                      width: 100,
-                      'http://localhost:3000/image?path=${movie!.posterUrl!}');
-                }
-                children.insert(
-                    0,
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [child]));
-
-                return Container(
-                    constraints: const BoxConstraints(minHeight: 300),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: children));
-              })),
-          // Background behind sliding panel
-          body: Column(children: [
-            Flex(direction: Axis.vertical, children: [
+        body: Stack(children: [
+          Container(
+            constraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width,
+                maxHeight: MediaQuery.of(context).size.height),
+            // Set the padding to display above the panel
+            padding: const EdgeInsets.only(bottom: 100),
+            child: Flex(direction: Axis.vertical, children: [
               Container(
                   color: Colors.green[800],
                   child: Row(
@@ -157,44 +106,78 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                                   );
                                 })))
                       ])),
-              Container(
-                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                  child: Consumer<StudioState>(
-                      builder: (context, provider, child) {
-                    var logs = [];
-                    if (provider.currentMovie?.log != null &&
-                        provider.currentMovie!.log!.isNotEmpty) {
-                      logs = provider.currentMovie!.log!.map((log) {
-                        return RichText(
-                            text: TextSpan(children: <TextSpan>[
-                          TextSpan(
-                            text: log.date,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          TextSpan(
-                            text: log.log.oneOf.value.toString(),
-                          )
-                        ]));
-                      }).toList();
-                    }
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          RichText(
-                              text: const TextSpan(
-                            text: "Production Log",
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                decoration: TextDecoration.underline),
-                          )),
-                          ...logs
-                        ]);
-                  })),
+              const Expanded(child: const MovieProductionLog()),
             ]),
-          ]),
-        ),
+          ),
+          SlidingUpPanel(
+            minHeight: 100,
+            maxHeight: 200,
+            panel: Container(
+                constraints:
+                    const BoxConstraints(minWidth: 400, minHeight: 225),
+                margin: const EdgeInsets.only(top: 0, left: 25, right: 25),
+                child:
+                    Consumer<StudioState>(builder: (context, provider, child) {
+                  var movie = provider.getCurrentMovie();
+
+                  var tagline = movie?.tagline ?? '';
+                  var children = <Widget>[
+                    Container(
+                        margin: const EdgeInsets.only(top: 25, left: 25),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                text: '${movie?.name}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                  text: '${tagline}',
+                                  style: const TextStyle(
+                                      fontStyle: FontStyle.italic)),
+                              textAlign: TextAlign.left,
+                            ),
+                            RichText(
+                              text: TextSpan(text: '${movie?.actor?.name}'),
+                              textAlign: TextAlign.left,
+                            ),
+                            RichText(
+                              text: TextSpan(text: '${movie?.actress?.name}'),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ))
+                  ];
+
+                  var child = Image.asset(
+                      height: 190, width: 100, 'images/poster-placeholder.jpg');
+
+                  if (movie?.posterUrl != null) {
+                    child = Image.network(
+                        height: 190,
+                        width: 100,
+                        'http://localhost:3000/image?path=${movie!.posterUrl!}');
+                  }
+                  children.insert(
+                      0,
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [child]));
+
+                  return Container(
+                      constraints: const BoxConstraints(minHeight: 300),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: children));
+                })),
+          )
+        ]),
         floatingActionButton: ExpandableActionButton(
           angle: 90,
           children: [
