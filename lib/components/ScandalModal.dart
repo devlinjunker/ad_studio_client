@@ -1,4 +1,5 @@
 import 'package:ai_studio_client/services/production.service.dart';
+import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
 import 'package:api/api.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,19 @@ class _ScandalModalState extends State<ScandalModal> {
     super.initState();
   }
 
+  void selectAction(ScandalAction action) {
+    Scandal scandal = Provider.of<StudioState>(context, listen: false)
+        .getCurrentMovie()!
+        .currentScandal!;
+
+    Provider.of<StudioState>(context, listen: false).addCurrentMovieScandal(
+        Provider.of<GameState>(context, listen: false).currentDate!,
+        scandal,
+        action);
+
+    Provider.of<GameState>(context, listen: false).stepWeek();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StudioState>(builder: (context, provider, child) {
@@ -48,29 +62,34 @@ class _ScandalModalState extends State<ScandalModal> {
 
       List<Widget> children = [];
       if (movie?.currentScandal != null) {
-        children = [
-          ...movie!.currentScandal!.actions.map((action) {
-            return RadioListTile(
-              title: Text("${action.description}"),
-              value: action,
-              groupValue: selectedAction,
-              onChanged: (val) {
-                setState(() {
-                  selectedAction = action;
-                });
-              },
-            );
-          }).toList(),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: const Text('Select'),
-            onPressed: () {
-              Navigator.of(context).pop();
+        children = movie!.currentScandal!.actions.map((action) {
+          return RadioListTile(
+            title: Text("${action.description}"),
+            value: action,
+            groupValue: selectedAction,
+            onChanged: (val) {
+              setState(() {
+                selectedAction = action;
+              });
             },
-          )
-        ];
+          );
+        }).toList();
+
+        if (selectedAction != null) {
+          children = [
+            ...children,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Select'),
+              onPressed: () {
+                selectAction(selectedAction!);
+                Navigator.of(context).pop();
+              },
+            )
+          ];
+        }
       }
 
       return AlertDialog(

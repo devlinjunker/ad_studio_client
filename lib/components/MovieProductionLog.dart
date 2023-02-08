@@ -1,3 +1,4 @@
+import 'package:api/api.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
@@ -20,6 +21,15 @@ class MovieProductionLog extends StatelessWidget {
             if (provider.currentMovie?.log != null &&
                 provider.currentMovie!.log!.isNotEmpty) {
               logs = provider.currentMovie!.log!.reversed.map((log) {
+                var text = '\n\n';
+                if (log.log.oneOf.isType(String)) {
+                  text += log.log.oneOf.value.toString();
+                } else if (log.log.oneOf.isType(Scandal)) {
+                  text += (log.log.oneOf.value as Scandal).headline;
+                } else if (log.log.oneOf.isType(Issue)) {
+                  text += (log.log.oneOf.value as Issue).headline;
+                }
+
                 return Flex(
                     direction: Axis.horizontal,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -41,7 +51,7 @@ class MovieProductionLog extends StatelessWidget {
                                     ),
                                   ),
                                   TextSpan(
-                                    text: log.log.oneOf.value.toString(),
+                                    text: text,
                                   )
                                 ]))),
                         const Divider(

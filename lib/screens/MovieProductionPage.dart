@@ -100,11 +100,33 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                           child: Container(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 25),
-                              child: RichText(
-                                text: const TextSpan(
-                                    text: '\$0',
-                                    style: TextStyle(color: Colors.white)),
-                                textAlign: TextAlign.right,
+                              child: Consumer<StudioState>(
+                                builder: (context, provider, child) {
+                                  return RichText(
+                                    text: TextSpan(
+                                        text:
+                                            'Media ${provider.getCurrentMovieMediaTotal()}',
+                                        style: TextStyle(color: Colors.white)),
+                                    textAlign: TextAlign.right,
+                                  );
+                                },
+                              )),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 25),
+                              child: Consumer<StudioState>(
+                                builder: (context, provider, child) {
+                                  return RichText(
+                                    text: TextSpan(
+                                        text:
+                                            '\$${provider.getCurrentMovie()!.cost}',
+                                        style: TextStyle(color: Colors.white)),
+                                    textAlign: TextAlign.right,
+                                  );
+                                },
                               )),
                         ),
                       ])),
@@ -139,12 +161,15 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                               ),
                               textAlign: TextAlign.left,
                             ),
-                            RichText(
-                              text: TextSpan(
-                                  text: '${tagline}',
-                                  style: const TextStyle(
-                                      fontStyle: FontStyle.italic)),
-                              textAlign: TextAlign.left,
+                            Container(
+                              margin: const EdgeInsets.only(bottom: 15),
+                              child: RichText(
+                                text: TextSpan(
+                                    text: '${tagline}',
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.italic)),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
                             RichText(
                               text: TextSpan(text: '${movie?.actor?.name}'),

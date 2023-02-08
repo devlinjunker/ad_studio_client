@@ -48,6 +48,16 @@ class StudioState extends ChangeNotifier {
     return currentMovie;
   }
 
+  num getCurrentMovieMediaTotal() {
+    num mediaTotal = 0;
+    if (currentMovie!.media != null) {
+      currentMovie!.media!.forEach((key, val) {
+        mediaTotal += val;
+      });
+    }
+    return mediaTotal;
+  }
+
   void setCurrentMovieActor(Performer performer) {
     var builder = PerformerBuilder();
     builder.replace(performer);
@@ -105,6 +115,33 @@ class StudioState extends ChangeNotifier {
     logBuilder.log.oneOf = OneOf.fromValue1<String>(value: log);
     movieBuilder.log.add(logBuilder.build());
     movieBuilder.currentWeek = currentMovie!.currentWeek + 1;
+    setCurrentMovie(movieBuilder.build());
+    notifyListeners();
+  }
+
+  void addCurrentMovieScandal(
+      Date date, Scandal scandal, ScandalAction action) {
+    ScandalActionBuilder actionBuilder = ScandalActionBuilder();
+    actionBuilder.replace(action);
+    ScandalBuilder builder = ScandalBuilder();
+    builder.replace(scandal);
+    builder.selectedAction = actionBuilder;
+    var movieBuilder = MovieBuilder();
+    movieBuilder.replace(currentMovie!);
+    var logBuilder = MovieLogInnerBuilder();
+    logBuilder.date = DateFormat.yMMMd().format(date.toDateTime());
+    logBuilder.log = MovieLogInnerLogBuilder();
+    logBuilder.log.oneOf = OneOf.fromValue1<Scandal>(value: scandal);
+    movieBuilder.log.add(logBuilder.build());
+    movieBuilder.currentWeek = currentMovie!.currentWeek + 1;
+    movieBuilder.currentScandal = null;
+    movieBuilder.cost = movieBuilder.cost! + action.financial;
+
+    var newMedia = 1;
+    MapBuilder<String, num> mediaBuilder = new MapBuilder();
+    mediaBuilder.updateValue('positive', (val) => (val + newMedia),
+        ifAbsent: () => newMedia);
+    movieBuilder.media = mediaBuilder;
     setCurrentMovie(movieBuilder.build());
     notifyListeners();
   }
