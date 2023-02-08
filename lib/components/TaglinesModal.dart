@@ -36,6 +36,11 @@ class _TaglinesModalState extends State<TaglinesModal> {
     super.initState();
   }
 
+  void addTagline() {
+    Provider.of<StudioState>(context, listen: false)
+        .addCurrentMovieTagline(selectedTagline!);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Consumer<StudioState>(builder: (context, provider, child) {
@@ -61,16 +66,22 @@ class _TaglinesModalState extends State<TaglinesModal> {
               },
             );
           }).toList(),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: const Text('Select'),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )
         ];
+        if (selectedTagline != null) {
+          children = [
+            ...children,
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: const Text('Select'),
+              onPressed: () {
+                addTagline();
+                Navigator.of(context).pop();
+              },
+            )
+          ];
+        }
       }
 
       return AlertDialog(

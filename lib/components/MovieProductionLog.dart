@@ -71,7 +71,7 @@ class MovieProductionLog extends StatelessWidget {
                   Row(mainAxisAlignment: MainAxisAlignment.start, children: [
                     RichText(
                         text: const TextSpan(
-                      text: "Production Log",
+                      text: "Log",
                       style: TextStyle(
                           fontSize: logHeaderSize,
                           fontWeight: FontWeight.bold,

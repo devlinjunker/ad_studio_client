@@ -65,7 +65,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.actor = builder;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void setCurrentMovieActress(Performer performer) {
@@ -75,7 +74,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.actress = builder;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void setCurrentMoviePoster(String url) {
@@ -83,7 +81,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.posterUrl = url;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void setCurrentMovieScandal(Scandal scandal) {
@@ -93,7 +90,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.currentScandal = builder;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void setCurrentMovieIssue(Issue issue) {
@@ -103,7 +99,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.currentIssue = builder;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void addCurrentMovieLog(Date date, String log) {
@@ -116,7 +111,6 @@ class StudioState extends ChangeNotifier {
     movieBuilder.log.add(logBuilder.build());
     movieBuilder.currentWeek = currentMovie!.currentWeek + 1;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
   }
 
   void addCurrentMovieScandal(
@@ -133,7 +127,6 @@ class StudioState extends ChangeNotifier {
     logBuilder.log = MovieLogInnerLogBuilder();
     logBuilder.log.oneOf = OneOf.fromValue1<Scandal>(value: scandal);
     movieBuilder.log.add(logBuilder.build());
-    movieBuilder.currentWeek = currentMovie!.currentWeek + 1;
     movieBuilder.currentScandal = null;
     movieBuilder.cost = movieBuilder.cost! + action.financial;
 
@@ -143,6 +136,12 @@ class StudioState extends ChangeNotifier {
         ifAbsent: () => newMedia);
     movieBuilder.media = mediaBuilder;
     setCurrentMovie(movieBuilder.build());
-    notifyListeners();
+  }
+
+  void addCurrentMovieTagline(String tagline) {
+    var movieBuilder = MovieBuilder();
+    movieBuilder.replace(currentMovie!);
+    movieBuilder.tagline = tagline;
+    setCurrentMovie(movieBuilder.build());
   }
 }

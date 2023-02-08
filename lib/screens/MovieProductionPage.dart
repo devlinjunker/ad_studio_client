@@ -53,6 +53,8 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
     game.stepWeek();
   }
 
+  void release() async {}
+
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (context) {
@@ -130,6 +132,13 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                               )),
                         ),
                       ])),
+              Container(child:
+                  Consumer<StudioState>(builder: (context, provider, child) {
+                return RichText(
+                    text: TextSpan(
+                        text:
+                            'Week: ${provider.getCurrentMovie()!.currentWeek} / ${provider.getCurrentMovie()!.productionTime} '));
+              })),
               const Expanded(child: const MovieProductionLog()),
             ]),
           ),
@@ -206,9 +215,9 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                 })),
           )
         ]),
-        floatingActionButton: ExpandableActionButton(
-          angle: 90,
-          children: [
+        floatingActionButton:
+            Consumer<StudioState>(builder: (context, provider, child) {
+          var children = [
             ActionButton(
               label: 'Next Week',
               onPressed: () => nextWeek(),
@@ -234,8 +243,24 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
               onPressed: () => showTaglinesModal(context),
               icon: const Icon(Icons.format_quote),
             ),
-          ],
-        ),
+          ];
+
+          if (provider.getCurrentMovie()!.currentWeek ==
+              provider.getCurrentMovie()!.productionTime) {
+            children = [
+              ActionButton(
+                label: 'Release',
+                onPressed: () => release(),
+                icon: const Icon(Icons.local_movies),
+              ),
+            ];
+          }
+
+          return ExpandableActionButton(
+            angle: 90,
+            children: children,
+          );
+        }),
       );
     });
   }
