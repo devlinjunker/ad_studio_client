@@ -162,11 +162,21 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                                     return const SizedBox();
                                   }
                                   Movie movie = provider.getCurrentMovie()!;
+                                  var overall = movie.budget +
+                                      movie.revenue -
+                                      movie.cost!;
+
+                                  var color = Colors.white;
+                                  if (overall < movie.budget) {
+                                    color = Colors.red;
+                                  } else if (overall > movie.budget) {
+                                    color = Colors.green;
+                                  }
                                   return RichText(
                                     text: TextSpan(
                                         text:
-                                            '${currencyFormatter.format(movie.revenue - movie.cost!)}',
-                                        style: TextStyle(color: Colors.white)),
+                                            '${currencyFormatter.format(overall)}',
+                                        style: TextStyle(color: color)),
                                     textAlign: TextAlign.right,
                                   );
                                 },
