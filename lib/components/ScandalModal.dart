@@ -42,7 +42,7 @@ class _ScandalModalState extends State<ScandalModal> {
         .getCurrentMovie()!
         .currentScandal!;
 
-    Provider.of<StudioState>(context, listen: false).addCurrentMovieScandal(
+    Provider.of<StudioState>(context, listen: false).addCurrentMovieScandalLog(
         Provider.of<GameState>(context, listen: false).currentDate!,
         scandal,
         action);

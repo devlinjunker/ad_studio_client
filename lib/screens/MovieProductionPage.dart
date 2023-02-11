@@ -1,7 +1,9 @@
 import 'package:ai_studio_client/AppScheme.dart';
 import 'package:ai_studio_client/components/MenuDrawer.dart';
+import 'package:ai_studio_client/services/release.service.dart';
 import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
+import 'package:api/api.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -23,6 +25,8 @@ class MovieProductionPage extends StatefulWidget {
 
 class _MovieProductionPageState extends State<MovieProductionPage> {
   void _next() {}
+
+  final currencyFormatter = NumberFormat.simpleCurrency();
 
   @override
   void didChangeDependencies() {
@@ -53,7 +57,37 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
     game.stepWeek();
   }
 
-  void release() async {}
+  void release() async {
+    var game = Provider.of<GameState>(context, listen: false);
+    var studio = Provider.of<StudioState>(context, listen: false);
+    var movie = studio.getCurrentMovie();
+    var revenue = ReleaseService.getRevenue(movie!);
+
+    studio.addCurrentMovieWeeklyRevenue(game.currentDate!, revenue);
+    game.stepWeek();
+
+    showDialog<void>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+              title: const Text('Revenue'),
+              content: RichText(
+                text: TextSpan(text: "${currencyFormatter.format(revenue)}"),
+              ),
+              actions: [
+                TextButton(
+                  style: TextButton.styleFrom(
+                    textStyle: Theme.of(context).textTheme.labelLarge,
+                  ),
+                  child: const Text('Close'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ]);
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -104,12 +138,15 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                                   vertical: 10, horizontal: 25),
                               child: Consumer<StudioState>(
                                 builder: (context, provider, child) {
+                                  if (provider.getCurrentMovie() == null) {
+                                    return const SizedBox();
+                                  }
                                   return RichText(
                                     text: TextSpan(
                                         text:
                                             'Media ${provider.getCurrentMovieMediaTotal()}',
                                         style: TextStyle(color: Colors.white)),
-                                    textAlign: TextAlign.right,
+                                    textAlign: TextAlign.center,
                                   );
                                 },
                               )),
@@ -121,10 +158,14 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                                   vertical: 10, horizontal: 25),
                               child: Consumer<StudioState>(
                                 builder: (context, provider, child) {
+                                  if (provider.getCurrentMovie() == null) {
+                                    return const SizedBox();
+                                  }
+                                  Movie movie = provider.getCurrentMovie()!;
                                   return RichText(
                                     text: TextSpan(
                                         text:
-                                            '\$${provider.getCurrentMovie()!.cost}',
+                                            '${currencyFormatter.format(movie.revenue - movie.cost!)}',
                                         style: TextStyle(color: Colors.white)),
                                     textAlign: TextAlign.right,
                                   );
@@ -134,10 +175,13 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                       ])),
               Container(child:
                   Consumer<StudioState>(builder: (context, provider, child) {
+                if (provider.getCurrentMovie() == null) {
+                  return const SizedBox();
+                }
                 return RichText(
                     text: TextSpan(
                         text:
-                            'Week: ${provider.getCurrentMovie()!.currentWeek} / ${provider.getCurrentMovie()!.productionTime} '));
+                            'Week: ${provider.getCurrentMovie()!.productionWeek} / ${provider.getCurrentMovie()!.productionTime} '));
               })),
               const Expanded(child: const MovieProductionLog()),
             ]),
@@ -152,6 +196,9 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                 padding: const EdgeInsets.only(top: 0, left: 25, right: 25),
                 child:
                     Consumer<StudioState>(builder: (context, provider, child) {
+                  if (provider.getCurrentMovie() == null) {
+                    return const SizedBox();
+                  }
                   var movie = provider.getCurrentMovie();
 
                   var tagline = movie?.tagline ?? '';
@@ -217,6 +264,9 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
         ]),
         floatingActionButton:
             Consumer<StudioState>(builder: (context, provider, child) {
+          if (provider.getCurrentMovie() == null) {
+            return const SizedBox();
+          }
           var children = [
             ActionButton(
               label: 'Next Week',
@@ -245,7 +295,7 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
             ),
           ];
 
-          if (provider.getCurrentMovie()!.currentWeek ==
+          if (provider.getCurrentMovie()!.productionWeek ==
               provider.getCurrentMovie()!.productionTime) {
             children = [
               ActionButton(
@@ -253,6 +303,7 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                 onPressed: () => release(),
                 icon: const Icon(Icons.local_movies),
               ),
+              ...children
             ];
           }
 

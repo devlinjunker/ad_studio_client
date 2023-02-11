@@ -16,6 +16,8 @@ class StudioState extends ChangeNotifier {
 
   Map<Movie, List<String>> taglines = {};
 
+  NumberFormat currencyFormatter = NumberFormat.simpleCurrency();
+
   List<Movie> getStudioMovies() {
     return studioMovies;
   }
@@ -109,24 +111,27 @@ class StudioState extends ChangeNotifier {
     logBuilder.log = MovieLogInnerLogBuilder();
     logBuilder.log.oneOf = OneOf.fromValue1<String>(value: log);
     movieBuilder.log.add(logBuilder.build());
-    movieBuilder.currentWeek = currentMovie!.currentWeek + 1;
+    movieBuilder.productionWeek = currentMovie!.productionWeek + 1;
     setCurrentMovie(movieBuilder.build());
   }
 
-  void addCurrentMovieScandal(
+  void addCurrentMovieScandalLog(
       Date date, Scandal scandal, ScandalAction action) {
     ScandalActionBuilder actionBuilder = ScandalActionBuilder();
     actionBuilder.replace(action);
     ScandalBuilder builder = ScandalBuilder();
     builder.replace(scandal);
     builder.selectedAction = actionBuilder;
+
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     var logBuilder = MovieLogInnerBuilder();
+
     logBuilder.date = DateFormat.yMMMd().format(date.toDateTime());
     logBuilder.log = MovieLogInnerLogBuilder();
     logBuilder.log.oneOf = OneOf.fromValue1<Scandal>(value: scandal);
     movieBuilder.log.add(logBuilder.build());
+
     movieBuilder.currentScandal = null;
     movieBuilder.cost = movieBuilder.cost! + action.financial;
 
@@ -142,6 +147,23 @@ class StudioState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.tagline = tagline;
+    setCurrentMovie(movieBuilder.build());
+  }
+
+  void addCurrentMovieWeeklyRevenue(Date date, num revenue) {
+    var movieBuilder = MovieBuilder();
+    movieBuilder.replace(currentMovie!);
+
+    movieBuilder.revenue = currentMovie!.revenue + revenue;
+
+    var logBuilder = MovieLogInnerBuilder();
+    logBuilder.date = DateFormat.yMMMd().format(date.toDateTime());
+    logBuilder.log = MovieLogInnerLogBuilder();
+    logBuilder.log.oneOf = OneOf.fromValue1<String>(
+        value: "Gross Revenue: ${currencyFormatter.format(revenue)}");
+    movieBuilder.log.add(logBuilder.build());
+
+    movieBuilder.releaseWeek = currentMovie!.releaseWeek + 1;
     setCurrentMovie(movieBuilder.build());
   }
 }
