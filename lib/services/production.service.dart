@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:built_collection/built_collection.dart';
 import 'package:dio/dio.dart';
 import 'package:api/api.dart';
@@ -71,5 +73,9 @@ class ProductionService {
     var log =
         await api.generateProductionLog(generatePosterRequest: builder.build());
     return log.data!;
+  }
+
+  static num generateCost(Movie movie) {
+    return (100 + Random().nextInt(400)) * 1000;
   }
 }

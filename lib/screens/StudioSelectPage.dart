@@ -157,7 +157,16 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
               return ListView(
                   children: snapshot!.data!.data!.map<Widget>((studio) {
                 return ListTile(
-                  title: RichText(text: TextSpan(text: studio.name)),
+                  title: RichText(
+                      text: TextSpan(
+                          style: studio.budget == 0
+                              ? TextStyle(
+                                  decoration: TextDecoration.lineThrough)
+                              : null,
+                          text: studio.name +
+                              ((studio.budget != null && studio.budget! > 0)
+                                  ? " (${currencyFormatter.format(studio.budget!)})"
+                                  : ""))),
                   onTap: () {
                     setState(() {
                       selectedStudio = studio;

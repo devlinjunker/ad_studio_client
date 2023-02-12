@@ -54,6 +54,10 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
 
     var log = await ProductionService.generateJournalLine(movie, true);
     studio.addCurrentMovieLog(game.currentDate!, log);
+    studio.addCurrentMovieWeeklyCost(
+        Date(game.currentDate!.year, game.currentDate!.month,
+            game.currentDate!.day + 2),
+        ProductionService.generateCost(movie!));
     game.stepWeek();
   }
 

@@ -16,7 +16,8 @@ class StudioState extends ChangeNotifier {
 
   Map<Movie, List<String>> taglines = {};
 
-  NumberFormat currencyFormatter = NumberFormat.simpleCurrency();
+  NumberFormat currencyFormatter =
+      NumberFormat.simpleCurrency(decimalDigits: 0);
 
   List<Movie> getStudioMovies() {
     return studioMovies;
@@ -172,6 +173,23 @@ class StudioState extends ChangeNotifier {
     movieBuilder.replace(currentMovie!);
     movieBuilder.budget = budget;
 
+    setCurrentMovie(movieBuilder.build());
+  }
+
+  void addCurrentMovieWeeklyCost(Date date, num cost) {
+    var movieBuilder = MovieBuilder();
+    movieBuilder.replace(currentMovie!);
+
+    movieBuilder.cost = currentMovie!.cost + cost;
+
+    var logBuilder = MovieLogInnerBuilder();
+    logBuilder.date = DateFormat.yMMMd().format(date.toDateTime());
+    logBuilder.log = MovieLogInnerLogBuilder();
+    logBuilder.log.oneOf = OneOf.fromValue1<String>(
+        value: "Weekly Expenses: ${currencyFormatter.format(cost)}");
+    movieBuilder.log.add(logBuilder.build());
+
+    movieBuilder.releaseWeek = currentMovie!.releaseWeek + 1;
     setCurrentMovie(movieBuilder.build());
   }
 }
