@@ -16,6 +16,8 @@ class GameState extends ChangeNotifier {
   Future<Response<BuiltList<Performer>>?> _actors = Future.value(null);
   Future<Response<BuiltList<Performer>>?> _actresses = Future.value(null);
 
+  Future<Response<BuiltList<MovieCompany>>?> _companies = Future.value(null);
+
   void setEra(Era era) {
     startEra = era;
     int startDay = Random().nextInt(365 * 3);
@@ -74,5 +76,14 @@ class GameState extends ChangeNotifier {
     currentDate =
         Date(currentDate!.year, currentDate!.month, currentDate!.day + 7);
     notifyListeners();
+  }
+
+  void setCompanies(Future<Response<BuiltList<MovieCompany>>?> companies) {
+    _companies = companies;
+    notifyListeners();
+  }
+
+  Future<Response<BuiltList<MovieCompany>>?> getCompanies() {
+    return _companies;
   }
 }

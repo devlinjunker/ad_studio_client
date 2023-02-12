@@ -21,16 +21,16 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
           Api(basePathOverride: 'http://localhost:3000').getDefaultApi();
       final bool useGpt = false; // bool |
 
-      Provider.of<GameState>(context, listen: false)
-          .setMovies(api.fetchMovies(useGpt: useGpt));
-      Provider.of<GameState>(context, listen: false).setActors(api.fetchActors(
+      var game = Provider.of<GameState>(context, listen: false);
+      game.setMovies(api.fetchMovies(useGpt: useGpt));
+      game.setActors(api.fetchActors(
           useGpt: useGpt,
           dates: Provider.of<GameState>(context, listen: false).startEra!));
-      Provider.of<GameState>(context, listen: false).setActresses(
-          api.fetchActresses(
-              useGpt: useGpt,
-              dates: Provider.of<GameState>(context, listen: false).startEra!));
-      // Provider.of<GameState>(context, listen: false).setActresses(fetchActresses());
+      game.setActresses(api.fetchActresses(
+          useGpt: useGpt,
+          dates: Provider.of<GameState>(context, listen: false).startEra!));
+      game.setCompanies(
+          api.fetchCompanies(useGpt: true, dates: game.startEra!));
     });
   }
 
