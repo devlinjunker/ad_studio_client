@@ -112,7 +112,6 @@ class StudioState extends ChangeNotifier {
     logBuilder.log = MovieLogInnerLogBuilder();
     logBuilder.log.oneOf = OneOf.fromValue1<String>(value: log);
     movieBuilder.log.add(logBuilder.build());
-    movieBuilder.productionWeek = currentMovie!.productionWeek + 1;
     setCurrentMovie(movieBuilder.build());
   }
 
@@ -189,7 +188,7 @@ class StudioState extends ChangeNotifier {
         value: "Weekly Expenses: ${currencyFormatter.format(cost)}");
     movieBuilder.log.add(logBuilder.build());
 
-    movieBuilder.releaseWeek = currentMovie!.releaseWeek + 1;
+    movieBuilder.productionWeek = currentMovie!.productionWeek + 1;
     setCurrentMovie(movieBuilder.build());
   }
 }
