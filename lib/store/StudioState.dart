@@ -33,6 +33,11 @@ class StudioState extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setStudioMovies(List<Movie> movies) {
+    studioMovies = movies;
+    notifyListeners();
+  }
+
   void setCurrentMovie(Movie movie) {
     currentMovie = movie;
 

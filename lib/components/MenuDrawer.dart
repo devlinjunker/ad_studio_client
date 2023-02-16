@@ -1,4 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../services/save.service.dart';
+import '../store/StudioState.dart';
+
+saveGame(context) {
+  var studio = Provider.of<StudioState>(context, listen: false);
+
+  showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        var message = "Save Game";
+        var actions = [
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Save'),
+            onPressed: () {
+              SaveService.saveGame('test', studio);
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: const Text('Cancel'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )
+        ];
+
+        return AlertDialog(
+            title: const Text('Save Game'),
+            content: RichText(
+              text: TextSpan(text: message),
+            ),
+            actions: actions);
+      });
+}
 
 MenuDrawer(context) {
   return Drawer(
@@ -39,11 +82,22 @@ MenuDrawer(context) {
           },
         ),
         ListTile(
+          title: const Text('Save Game'),
+          onTap: () {
+            Navigator.pop(context);
+            saveGame(context);
+          },
+        ),
+        ListTile(
+          title: const Text('Load Game'),
+          onTap: () {
+            SaveService.loadGame(
+                'test', Provider.of<StudioState>(context, listen: false));
+          },
+        ),
+        ListTile(
           title: const Text('Settings'),
           onTap: () {
-            // Update the state of the app
-            // ...
-            // Then close the drawer
             Navigator.pop(context);
           },
         ),

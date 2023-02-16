@@ -7,7 +7,8 @@
     {
       "name": "ai_studio_client",
       "request": "launch",
-      "type": "dart"
+      "type": "dart",
+      "args": ["--web-port", "3333"]
     },
     {
       "name": "ai_studio_client (profile mode)",

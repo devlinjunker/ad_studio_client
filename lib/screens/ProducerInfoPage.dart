@@ -30,7 +30,7 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
           useGpt: useGpt,
           dates: Provider.of<GameState>(context, listen: false).startEra!));
       game.setCompanies(
-          api.fetchCompanies(useGpt: true, dates: game.startEra!));
+          api.fetchCompanies(useGpt: useGpt, dates: game.startEra!));
     });
   }
 
