@@ -39,8 +39,9 @@ dependencies:
   dio: 4.0.4
   built_collection: ^5.1.1
   basic_utils: ^5.4.2
-  sliding_up_panel: ^2.0.0+1
   shared_preferences: ^2.0.0
+  sliding_up_panel: ^2.0.0+1
+  float_column: ^1.4.0
 
 
 

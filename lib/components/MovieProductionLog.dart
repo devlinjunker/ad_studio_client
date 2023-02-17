@@ -21,13 +21,39 @@ class MovieProductionLog extends StatelessWidget {
             if (provider.currentMovie?.log != null &&
                 provider.currentMovie!.log!.isNotEmpty) {
               logs = provider.currentMovie!.log!.reversed.map((log) {
-                var text = '\n\n';
+                var children = [];
                 if (log.log.oneOf.isType(String)) {
-                  text += log.log.oneOf.value.toString();
-                } else if (log.log.oneOf.isType(Scandal)) {
-                  text += (log.log.oneOf.value as Scandal).headline;
+                  children.add(RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                        text: log.log.oneOf.value.toString(),
+                      )));
                 } else if (log.log.oneOf.isType(Issue)) {
-                  text += (log.log.oneOf.value as Issue).headline;
+                  children.add(RichText(
+                      textAlign: TextAlign.left,
+                      text: TextSpan(
+                        text: (log.log.oneOf.value as Issue).headline,
+                        style: const TextStyle(
+                          fontStyle: FontStyle.italic,
+                        ),
+                      )));
+                } else if (log.log.oneOf.isType(Scandal)) {
+                  children.add(Row(
+                    children: [
+                      Image.network(
+                          height: 100,
+                          width: 100,
+                          'http://localhost:3000/image?path=${(log.log.oneOf.value as Scandal).imagePath}'),
+                      RichText(
+                          textAlign: TextAlign.left,
+                          text: TextSpan(
+                            text: (log.log.oneOf.value as Scandal).headline,
+                            style: const TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ))
+                    ],
+                  ));
                 }
 
                 return Flex(
@@ -41,19 +67,19 @@ class MovieProductionLog extends StatelessWidget {
                             constraints: BoxConstraints(
                                 maxWidth: viewportConstraints.maxWidth - 50),
                             margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: RichText(
-                                textAlign: TextAlign.left,
-                                text: TextSpan(children: <TextSpan>[
-                                  TextSpan(
-                                    text: log.date,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: text,
-                                  )
-                                ]))),
+                            child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  RichText(
+                                      textAlign: TextAlign.left,
+                                      text: TextSpan(
+                                        text: log.date,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )),
+                                  ...children
+                                ])),
                         const Divider(
                           color: Colors.black,
                           height: 5,

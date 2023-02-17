@@ -26,7 +26,7 @@ class MovieProductionPage extends StatefulWidget {
 class _MovieProductionPageState extends State<MovieProductionPage> {
   void _next() {}
 
-  final currencyFormatter = NumberFormat.simpleCurrency();
+  final currencyFormatter = NumberFormat.simpleCurrency(decimalDigits: 0);
 
   @override
   void didChangeDependencies() {
@@ -215,7 +215,8 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                   }
                   var movie = provider.getCurrentMovie();
 
-                  var tagline = movie?.tagline ?? '';
+                  var tagline =
+                      movie?.tagline != null ? ' - ${movie?.tagline}' : '';
                   var children = <Widget>[
                     Container(
                         margin: const EdgeInsets.only(top: 15, left: 25),
@@ -224,31 +225,38 @@ class _MovieProductionPageState extends State<MovieProductionPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             RichText(
-                              text: TextSpan(
-                                text: '${movie?.name}',
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
-                              ),
+                              text: TextSpan(children: <TextSpan>[
+                                TextSpan(
+                                  text: '${movie?.name}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                TextSpan(
+                                    text: '${tagline}',
+                                    style: const TextStyle(
+                                        fontStyle: FontStyle.italic))
+                              ]),
                               textAlign: TextAlign.left,
                             ),
                             Container(
-                              margin: const EdgeInsets.only(bottom: 15),
-                              child: RichText(
-                                text: TextSpan(
-                                    text: '${tagline}',
-                                    style: const TextStyle(
-                                        fontStyle: FontStyle.italic)),
-                                textAlign: TextAlign.left,
-                              ),
-                            ),
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: RichText(
+                                  text: TextSpan(
+                                      text: '${movie?.distributor?.name}',
+                                      style: const TextStyle(fontSize: 10)),
+                                  textAlign: TextAlign.left,
+                                )),
                             RichText(
                               text: TextSpan(text: '${movie?.actor?.name}'),
                               textAlign: TextAlign.left,
                             ),
-                            RichText(
-                              text: TextSpan(text: '${movie?.actress?.name}'),
-                              textAlign: TextAlign.left,
-                            ),
+                            Container(
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: RichText(
+                                  text:
+                                      TextSpan(text: '${movie?.actress?.name}'),
+                                  textAlign: TextAlign.left,
+                                )),
                           ],
                         ))
                   ];

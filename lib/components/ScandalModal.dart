@@ -2,6 +2,7 @@ import 'package:ai_studio_client/services/production.service.dart';
 import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
 import 'package:api/api.dart';
+import 'package:float_column/float_column.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -57,7 +58,20 @@ class _ScandalModalState extends State<ScandalModal> {
       Widget content = CircularProgressIndicator();
 
       if (movie?.currentScandal != null) {
-        content = Text('${movie?.currentScandal?.description}');
+        content = FloatColumn(
+          children: [
+            Floatable(
+              float: FCFloat.start,
+              padding: EdgeInsets.only(right: 8),
+              child: Image.network(
+                  height: 100,
+                  width: 100,
+                  'http://localhost:3000/image?path=${movie!.currentScandal!.imagePath}'),
+            ),
+            WrappableText(
+                text: TextSpan(text: '${movie!.currentScandal!.description}')),
+          ],
+        );
       }
 
       List<Widget> children = [];

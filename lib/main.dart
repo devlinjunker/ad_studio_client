@@ -3,7 +3,7 @@ import 'package:ai_studio_client/screens/MovieHallPage.dart';
 import 'package:ai_studio_client/screens/MovieProductionPage.dart';
 import 'package:ai_studio_client/screens/MovieSelectPage.dart';
 import 'package:ai_studio_client/screens/PerformerSelectPage.dart';
-import 'package:ai_studio_client/screens/StudioSelectPage.dart';
+import 'package:ai_studio_client/screens/DistributorSelectPage.dart';
 import 'package:ai_studio_client/store/GameState.dart';
 import 'package:ai_studio_client/store/StudioState.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +53,7 @@ class _MyAppState extends State<MyApp> {
               '/era': (context) => const EraSelectPage(),
               '/producer': (context) => const ProducerInfoPage(),
               '/movies': (context) => const MovieSelectPage(),
-              '/studio': (context) => const StudioSelectPage(),
+              '/distributor': (context) => const DistributorSelectPage(),
               '/performers': (context) => const PerformerSelectPage(),
               '/production': (context) => const MovieProductionPage(),
               '/movie-hall': (context) => const MovieHallPage(),

@@ -44,9 +44,9 @@ class ReleaseService {
         getRatingMatch(
                 movie.family, movie.actor!.family, movie.actress!.family) *
             (ratingMatchValue) +
-        getRatingMatch(
-                movie.mystery, movie.actor!.mystery, movie.actress!.mystery) *
-            (ratingMatchValue) +
+        // getRatingMatch(
+        //         movie.mystery, movie.actor!.mystery, movie.actress!.mystery) *
+        (ratingMatchValue) +
         getRatingMatch(
                 movie.romance, movie.actor!.romance, movie.actress!.romance) *
             (ratingMatchValue) +

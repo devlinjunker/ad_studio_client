@@ -172,9 +172,11 @@ class StudioState extends ChangeNotifier {
     setCurrentMovie(movieBuilder.build());
   }
 
-  void setCurrentMovieBudget(num budget) {
+  void setCurrentMovieDistributor(MovieCompany distributor, num budget) {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
+    movieBuilder.distributor = MovieCompanyBuilder();
+    movieBuilder.distributor.replace(distributor);
     movieBuilder.budget = budget;
 
     setCurrentMovie(movieBuilder.build());

@@ -12,21 +12,21 @@ import 'package:api/api.dart';
 
 import '../store/StudioState.dart';
 
-class StudioSelectPage extends StatefulWidget {
-  const StudioSelectPage({super.key});
+class DistributorSelectPage extends StatefulWidget {
+  const DistributorSelectPage({super.key});
 
   @override
-  State<StudioSelectPage> createState() => _StudioSelectPageState();
+  State<DistributorSelectPage> createState() => _DistributorSelectPage();
 }
 
-class _StudioSelectPageState extends State<StudioSelectPage> {
-  MovieCompany? selectedStudio;
-  late Future<Response<BuiltList<MovieCompany>>?> studios;
+class _DistributorSelectPage extends State<DistributorSelectPage> {
+  MovieCompany? selectedDistributor;
+  late Future<Response<BuiltList<MovieCompany>>?> distributors;
 
   final currencyFormatter = NumberFormat.simpleCurrency(decimalDigits: 0);
 
   void _goToPerformerSelectScreen(context) {
-    if (selectedStudio != null) {
+    if (selectedDistributor != null) {
       // Provider.of<StudioState>(context, listen: false)
       //     .setCurrentMovie(selectedMovie!);
       Navigator.pushReplacementNamed(context, '/performers');
@@ -44,37 +44,38 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
   void initState() {
     super.initState();
     setState(() => {
-          studios =
+          distributors =
               Provider.of<GameState>(context, listen: false).getCompanies()
         });
   }
 
   void _openStudioNegotiationModal(context) {
     num budget = 0;
-    if (selectedStudio!.budget != null) {
-      budget = selectedStudio!.budget!;
+    if (selectedDistributor!.budget != null) {
+      budget = selectedDistributor!.budget!;
     } else {
       var chance = Random().nextDouble();
       if (chance < 0.25) {
         budget = (5 + Random().nextInt(10)) * 1000000;
       }
 
-      MovieCompanyBuilder builder = selectedStudio!.toBuilder();
-      builder.replace(selectedStudio!);
+      MovieCompanyBuilder builder = selectedDistributor!.toBuilder();
+      builder.replace(selectedDistributor!);
       builder.budget = budget;
       var studio = builder.build();
-      setState(() => {selectedStudio = builder.build()});
+      setState(() => {selectedDistributor = builder.build()});
 
       // HACK: doesn't seem very good
-      studios.then((list) {
-        var studioList = list!.data!;
-        var oldStudio = studioList.where((m) => m.name == selectedStudio!.name);
+      distributors.then((list) {
+        var distributorList = list!.data!;
+        var oldStudio =
+            distributorList.where((m) => m.name == selectedDistributor!.name);
         if (oldStudio.length > 0) {
-          var idx = studioList.indexOf(oldStudio.first);
-          var builder = studioList.toBuilder();
+          var idx = distributorList.indexOf(oldStudio.first);
+          var builder = distributorList.toBuilder();
           builder.replaceRange(idx, idx + 1, [studio]);
           setState(() => {
-                studios = Future.value(Response(
+                distributors = Future.value(Response(
                     data: builder.build(), requestOptions: list.requestOptions))
               });
         }
@@ -86,7 +87,7 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
         barrierDismissible: false,
         builder: (BuildContext context) {
           var message =
-              "${selectedStudio!.name} has declined to fund your film";
+              "${selectedDistributor!.name} has declined to fund your film";
           var actions = [
             TextButton(
               style: TextButton.styleFrom(
@@ -101,7 +102,7 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
 
           if (budget != 0) {
             message =
-                "${selectedStudio!.name} offers a budget of ${currencyFormatter.format(budget)}";
+                "${selectedDistributor!.name} offers a budget of ${currencyFormatter.format(budget)}";
             actions = [
               ...actions,
               TextButton(
@@ -111,7 +112,8 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
                 child: const Text('Select'),
                 onPressed: () {
                   Provider.of<StudioState>(context, listen: false)
-                      .setCurrentMovieBudget(budget);
+                      .setCurrentMovieDistributor(selectedDistributor!, budget);
+
                   _goToPerformerSelectScreen(context);
                 },
               )
@@ -119,7 +121,7 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
           }
 
           return AlertDialog(
-              title: const Text('Studio Funding'),
+              title: const Text('Distributor Funding'),
               content: RichText(
                 text: TextSpan(text: message),
               ),
@@ -130,7 +132,7 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
   @override
   Widget build(BuildContext context) {
     var button;
-    if (selectedStudio != null) {
+    if (selectedDistributor != null) {
       button = FloatingActionButton(
         onPressed: () {
           _openStudioNegotiationModal(context);
@@ -142,13 +144,13 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Movie Hall'),
+        title: const Text('Choose Distributor'),
       ),
       drawer: MenuDrawer(context),
       body: Center(
           child: Consumer<GameState>(builder: (context, provider, child) {
         return FutureBuilder<Response<BuiltList<MovieCompany>>?>(
-            future: studios,
+            future: distributors,
             builder: (context, snapshot) {
               if (snapshot?.data?.data == null) {
                 return CircularProgressIndicator();
@@ -169,15 +171,14 @@ class _StudioSelectPageState extends State<StudioSelectPage> {
                                   : ""))),
                   onTap: () {
                     setState(() {
-                      selectedStudio = studio;
+                      selectedDistributor = studio;
+                      _openStudioNegotiationModal(context);
                     });
                   },
                 );
               }).toList());
             });
       })),
-      floatingActionButton:
-          button, // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

@@ -18,11 +18,11 @@ class MovieSelectPage extends StatefulWidget {
 class _MovieSelectPageState extends State<MovieSelectPage> {
   Movie? selectedMovie;
 
-  void _goToStudioSelectScreen() {
+  void _goToDistributorSelectScreen() {
     if (selectedMovie != null) {
       Provider.of<StudioState>(context, listen: false)
           .setCurrentMovie(selectedMovie!);
-      Navigator.pushNamed(context, '/studio');
+      Navigator.pushNamed(context, '/distributor');
     }
   }
 
@@ -93,7 +93,7 @@ class _MovieSelectPageState extends State<MovieSelectPage> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          onPressed: _goToStudioSelectScreen,
+          onPressed: _goToDistributorSelectScreen,
           tooltip: 'Select',
           child: const Text('Next'),
         ), // This trailing comma makes auto-formatting nicer for build methods.
