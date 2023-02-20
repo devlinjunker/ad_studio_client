@@ -52,21 +52,49 @@ class _ProducerInfoPageState extends State<ProducerInfoPage> {
       appBar: AppBar(
           title: const Text("Producer Info"), automaticallyImplyLeading: false),
       body: Center(
+          child: Container(
+        margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Container(
-                constraints: const BoxConstraints(minWidth: 100, maxWidth: 400),
-                margin: const EdgeInsets.only(top: 25, left: 24, right: 24),
-                child: const TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                  ),
-                ))
+                margin: const EdgeInsets.only(bottom: 10),
+                child: RichText(
+                    text: const TextSpan(
+                        text: "We're excited to have you here! " +
+                            "We are looking for the best and brightest studio executives to join us in creating the next blockbuster hit."))),
+            Container(
+                margin: const EdgeInsets.only(bottom: 10),
+                child: RichText(
+                    text: const TextSpan(
+                        text:
+                            "In order to get started, we'll need a few pieces of information from you: we need to know who you are and what studio you represent."))),
+            Container(
+                margin: const EdgeInsets.only(bottom: 25),
+                child: RichText(
+                    text: const TextSpan(
+                        text:
+                            "We'll use this information to generate custom content and keep track of your progress as you play the game!"))),
+            Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+              Container(
+                  constraints: BoxConstraints(maxWidth: 400),
+                  margin: const EdgeInsets.only(bottom: 25),
+                  child: const TextField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Name',
+                    ),
+                  ))
+            ]),
+            const TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Studio Name',
+              ),
+            )
           ],
         ),
-      ),
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: _goToMovieSelectScreen,
         tooltip: 'Select',

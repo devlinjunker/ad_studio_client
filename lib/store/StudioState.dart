@@ -66,21 +66,23 @@ class StudioState extends ChangeNotifier {
     return mediaTotal;
   }
 
-  void setCurrentMovieActor(Performer performer) {
+  void setCurrentMovieActor(Performer performer, num price) {
     var builder = PerformerBuilder();
     builder.replace(performer);
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actor = builder;
+    movieBuilder.cost = currentMovie!.cost - price;
     setCurrentMovie(movieBuilder.build());
   }
 
-  void setCurrentMovieActress(Performer performer) {
+  void setCurrentMovieActress(Performer performer, num price) {
     var builder = PerformerBuilder();
     builder.replace(performer);
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actress = builder;
+    movieBuilder.cost = currentMovie!.cost - price;
     setCurrentMovie(movieBuilder.build());
   }
 

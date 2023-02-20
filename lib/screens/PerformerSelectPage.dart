@@ -36,18 +36,51 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
   }
 
   void _goToNextScreen() {
-    final args =
-        ModalRoute.of(context)!.settings.arguments as PerformerSelectPageArgs?;
+    Movie movie =
+        Provider.of<StudioState>(context, listen: false).getCurrentMovie()!;
 
-    if (args?.type == 'actress') {
-      Provider.of<StudioState>(context, listen: false)
-          .setCurrentMovieActress(selectedPerformer!);
-      Navigator.pushNamed(context, '/production');
+    var price = selectedPerformer!.grossRevenue / 100;
+
+    if ((movie!.budget - movie!.cost) > price) {
+      final args = ModalRoute.of(context)!.settings.arguments
+          as PerformerSelectPageArgs?;
+
+      if (args?.type == 'actress') {
+        Provider.of<StudioState>(context, listen: false)
+            .setCurrentMovieActress(selectedPerformer!, price);
+        Navigator.pushNamed(context, '/production');
+      } else {
+        Provider.of<StudioState>(context, listen: false)
+            .setCurrentMovieActor(selectedPerformer!, price);
+        Navigator.pushNamed(context, '/performers',
+            arguments: PerformerSelectPageArgs('actress'));
+      }
     } else {
-      Provider.of<StudioState>(context, listen: false)
-          .setCurrentMovieActor(selectedPerformer!);
-      Navigator.pushNamed(context, '/performers',
-          arguments: PerformerSelectPageArgs('actress'));
+      showDialog<void>(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            var actions = [
+              TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: const Text('Close'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ];
+
+            return AlertDialog(
+                title: const Text('Contract'),
+                content: RichText(
+                  text: TextSpan(
+                      text:
+                          'Actor is asking for ${price} but your remaining budget is ${movie.budget - movie.cost}'),
+                ),
+                actions: actions);
+          });
     }
   }
 
@@ -86,16 +119,21 @@ class _PerformerSelectPageState extends State<PerformerSelectPage> {
 
                         if (snapshot.hasData && snapshot.data != null) {
                           children = snapshot.data!.data!
-                              .map((performer) => RadioListTile(
-                                    title: Text("${performer.name}"),
-                                    value: performer,
-                                    groupValue: selectedPerformer,
-                                    onChanged: (val) {
-                                      setState(() {
-                                        selectedPerformer = performer;
-                                      });
-                                    },
-                                  ))
+                              .map((performer) {
+                                var price = performer.grossRevenue / 100000000;
+                                return RadioListTile(
+                                  title: Text(
+                                      "${performer.name} - (\$${price} Million)"),
+                                  value: performer,
+                                  groupValue: selectedPerformer,
+                                  onChanged: (val) {
+                                    setState(() {
+                                      selectedPerformer = performer;
+                                    });
+                                  },
+                                );
+                              })
+                              .cast<Widget>()
                               .toList();
                         } else if (snapshot.hasError) {
                           children = <Widget>[Text('${snapshot.error}')];
