@@ -1,16 +1,27 @@
 # ai_studio_client
 
-A new Flutter project.
+Flutter UI for the [GPT Cinema API](https://github.com/devlinjunker/ai-movie-studio)
 
-## Getting Started
+Features: 
+ - Select Era for Movie Generation
+ - Enter Studio and Producer Name
+ - Track all movies made by a Studio and Display in Movie Hall Page
+ - Choose Studio/Distributor to work with based on (random) budget offered
+ - Choose Lead Actor and Actress
+ - Generate Scandal/Studio Issue
+ - Generate Movie Tag Lines
+ - Generate Movie Poster
+ - Generate Production Journal
+ - Generate Weekly Cost
+ - Generate Release Profit
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+Note: Contains flags in code `useGpt` to determine if we should make a new request to GPT API or just use cached values from DB
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Running
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Note: This Flutter UI depends on a the [GPT Cinema API](https://github.com/devlinjunker/ai-movie-studio/blob/master/api)
+
+- Run the Flutter App with `flutter run`
+
+# Screen Shots:
