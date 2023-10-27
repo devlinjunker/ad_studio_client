@@ -18,6 +18,7 @@ class SaveService {
   static String getStateString(StudioState studio) {
     var builder = Serializers().toBuilder();
     builder.add(Performer.serializer);
+    builder.add(MovieCompany.serializer);
     var serializers = builder.build();
     dynamic state = {};
     state['movie'] = (Movie.serializer as PrimitiveSerializer)

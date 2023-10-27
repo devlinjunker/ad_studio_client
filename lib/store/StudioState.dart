@@ -72,7 +72,7 @@ class StudioState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actor = builder;
-    movieBuilder.cost = currentMovie!.cost - price;
+    movieBuilder.cost = currentMovie!.cost + price;
     setCurrentMovie(movieBuilder.build());
   }
 
@@ -82,7 +82,7 @@ class StudioState extends ChangeNotifier {
     var movieBuilder = MovieBuilder();
     movieBuilder.replace(currentMovie!);
     movieBuilder.actress = builder;
-    movieBuilder.cost = currentMovie!.cost - price;
+    movieBuilder.cost = currentMovie!.cost + price;
     setCurrentMovie(movieBuilder.build());
   }
 
